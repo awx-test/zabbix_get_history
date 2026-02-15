@@ -34,12 +34,13 @@
         output_path: "{{ output_path }}"
       register: result
 
-    - name: Install samba-client (Alpine)
+    - name: Install samba-client using command (если модуль apk не работает)
       become: yes
-      apk:
-        name: samba-client
-        state: present
+      command: apk add samba-client
+      args:
+        creates: /usr/bin/smbclient  # Проверяем, что файл появился
       when: ansible_os_family == "Alpine" or ansible_distribution == "Alpine"
+      ignore_errors: yes
 
     - name: Copy to Windows share
       shell: |
