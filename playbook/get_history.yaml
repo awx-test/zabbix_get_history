@@ -7,17 +7,16 @@
     zabbix_server: ''
     zabbix_username: ''
     zabbix_password: ''
-    host_names: []
+    host_names: ''
     days_back: 1
     output_path: ''
 
 
   tasks:
-    - name: Create output directory
-      file:
-        path: /tmp/zabbix_reports
-        state: directory
-        mode: '0755'
+
+    - set_fact:
+        host_names: "{{ host_names.split(',') }}"
+      when: host_names is string
 
     - name: Collect metrics from Zabbix
       zabbix_metrics:
