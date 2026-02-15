@@ -39,7 +39,6 @@
       command: apk add samba-client
       args:
         creates: /usr/bin/smbclient  # Проверяем, что файл появился
-      when: ansible_os_family == "Alpine" or ansible_distribution == "Alpine"
       ignore_errors: yes
 
     - name: Copy to Windows share
