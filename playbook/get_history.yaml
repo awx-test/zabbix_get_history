@@ -25,7 +25,7 @@
         password: "{{ zabbix_password }}"
         host_names: "{{ host_names }}"
         days_back: "{{ days_back }}"
-        output_path: "{{ output_path }}\servers_metrics.xlsx"
+        output_path: "{{ output_path }}//servers_metrics.xlsx"
       register: result
 
     - name: Display results
