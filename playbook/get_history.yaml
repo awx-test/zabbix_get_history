@@ -1,0 +1,34 @@
+---
+- name: Collect Zabbix metrics
+  hosts: localhost
+  gather_facts: false
+
+  vars:
+    zabbix_server: ''
+    zabbix_username: ''
+    zabbix_password: ''
+    host_names: []
+    days_back: 1
+    output_path: ''
+
+
+  tasks:
+    - name: Create output directory
+      file:
+        path: /tmp/zabbix_reports
+        state: directory
+        mode: '0755'
+
+    - name: Collect metrics from Zabbix
+      zabbix_metrics:
+        zabbix_server: "{{ zabbix_server }}"
+        username: "{{ zabbix_username }}"
+        password: "{{ zabbix_password }}"
+        host_names: "{{ host_names }}"
+        days_back: "{{ days_back }}"
+        output_path: "{{ output_path }}/servers_metrics_{{ ansible_date_time.date }}.xlsx"
+      register: result
+
+    - name: Display results
+      debug:
+        msg: "Metrics collected and saved to {{ result }}"
