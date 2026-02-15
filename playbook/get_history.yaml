@@ -35,7 +35,6 @@
       register: result
 
     - name: Install smbclient
-      become: yes
       package:
         name: smbclient
         state: present
