@@ -41,6 +41,7 @@
       ignore_errors: yes
 
     - name: Copy to Windows share
+      become: yes
       shell: |
         smbclient '{{ win_share }}' \
         -N \
