@@ -9,10 +9,16 @@
     zabbix_password: ''
     host_names: ''
     days_back: 1
-    output_path: ''
+    output_path: '/tmp/zabbix_reports/servers_metrics.xlsx'
+    win_share: ''
 
 
   tasks:
+    - name: Create output directory
+      file:
+        path: /tmp/zabbix_reports
+        state: directory
+        mode: '0755'
 
     - set_fact:
         host_names: "{{ host_names.split(',') }}"
@@ -25,9 +31,24 @@
         password: "{{ zabbix_password }}"
         host_names: "{{ host_names }}"
         days_back: "{{ days_back }}"
-        output_path: "{{ output_path }}\\servers_metrics.xlsx"
+        output_path: "{{ output_path }}"
       register: result
+
+    - name: Install smbclient
+      become: yes
+      package:
+        name: smbclient
+        state: present
+      ignore_errors: yes
+
+    - name: Copy to Windows share
+      shell: |
+        smbclient '{{ win_share }}' \
+        -N \
+        -c "put {{ output_path }} server_metrics.xlsx"
+        register: copy_result
+      failed_when: copy_result.rc != 0 and "NT_STATUS_ACCESS_DENIED" not in copy_result.stderr
 
     - name: Display results
       debug:
-        msg: "Metrics collected and saved to {{ result }}"
+        msg: "Metrics collected and saved to {{ win_share }}"
