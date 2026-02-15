@@ -19,7 +19,7 @@
       when: host_names is string
 
     - debug:
-        msg: "{{ output_path }}//servers_metrics.xlsx | string"
+        msg: "{{ (output_path + '\\servers_metrics.xlsx') | string }}"
 
     - name: Collect metrics from Zabbix
       zabbix_metrics:
