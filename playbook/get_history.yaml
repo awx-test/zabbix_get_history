@@ -34,19 +34,19 @@
         output_path: "{{ output_path }}"
       register: result
 
-    - name: Install smbclient
+    - name: Install samba-client (Alpine)
       become: yes
-      package:
-        name: smbclient
+      apk:
+        name: samba-client
         state: present
-      ignore_errors: yes
+      when: ansible_os_family == "Alpine" or ansible_distribution == "Alpine"
 
     - name: Copy to Windows share
       shell: |
         smbclient '{{ win_share }}' \
         -N \
         -c "put {{ output_path }} server_metrics.xlsx"
-        register: copy_result
+      register: copy_result
       failed_when: copy_result.rc != 0 and "NT_STATUS_ACCESS_DENIED" not in copy_result.stderr
 
     - name: Display results
