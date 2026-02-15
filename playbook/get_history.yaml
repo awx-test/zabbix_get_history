@@ -35,7 +35,6 @@
       register: result
 
     - name: Install samba-client using command (если модуль apk не работает)
-      become: yes
       command: apk add samba-client
       args:
         creates: /usr/bin/smbclient  # Проверяем, что файл появился
