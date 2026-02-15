@@ -18,6 +18,9 @@
         host_names: "{{ host_names.split(',') }}"
       when: host_names is string
 
+    - debug:
+        msg: "{{ output_path }}//servers_metrics.xlsx | string"
+
     - name: Collect metrics from Zabbix
       zabbix_metrics:
         zabbix_server: "{{ zabbix_server }}"
