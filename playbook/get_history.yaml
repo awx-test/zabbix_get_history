@@ -15,8 +15,6 @@
     windows_password: "{{ ansible_password }}"
 
   tasks:
-    - debug:
-        msg: "Windows share: {{ win_share }} User: {{ windows_username }} Password: {{ windows_password }}"
 
     - name: Create output directory
       file:
