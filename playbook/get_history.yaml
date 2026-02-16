@@ -11,11 +11,13 @@
     days_back: 1
     output_path: '/tmp/zabbix_reports/servers_metrics.xlsx'
     win_share: ''
-    windows_username: ''
-    windows_password: ''
-
+    windows_username: "{{ ansible_user }}"
+    windows_password: "{{ ansible_password }}"
 
   tasks:
+    - debug:
+        msg: "Windows share: {{ win_share }} User: {{ windows_username }} Password: {{ windows_password }}"
+
     - name: Create output directory
       file:
         path: /tmp/zabbix_reports
