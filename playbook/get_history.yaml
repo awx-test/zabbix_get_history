@@ -11,6 +11,8 @@
     days_back: 1
     output_path: '/tmp/zabbix_reports/servers_metrics.xlsx'
     win_share: ''
+    windows_username: ''
+    windows_password: ''
 
 
   tasks:
@@ -37,7 +39,7 @@
     - name: Copy to Windows share
       shell: |
         smbclient '{{ win_share }}' \
-        -N \
+        -U '{{ windows_username }}%{{ windows_password }}' \
         -c "put {{ output_path }} server_metrics.xlsx"
       register: copy_result
       failed_when: copy_result.rc != 0 and "NT_STATUS_ACCESS_DENIED" not in copy_result.stderr
