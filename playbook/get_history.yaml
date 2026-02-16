@@ -34,12 +34,6 @@
         output_path: "{{ output_path }}"
       register: result
 
-    - name: Install samba-client using command (если модуль apk не работает)
-      command: apk add samba-client
-      args:
-        creates: /usr/bin/smbclient  # Проверяем, что файл появился
-      ignore_errors: yes
-
     - name: Copy to Windows share
       shell: |
         smbclient '{{ win_share }}' \
